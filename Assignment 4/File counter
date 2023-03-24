@@ -1,0 +1,24 @@
+import java.io.*;
+import java.util.*;
+class FileCounter {
+
+    public static void main(String[] args) throws FileNotFoundException {
+        File file = new File("File1.txt");
+        Scanner scanner = new Scanner(file);
+        int numWords = 0;
+        int numChars = 0;
+        int numLines = 0;
+
+        
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            numWords += line.split("\\s+").length;
+            numChars += line.length();
+            numLines++;
+        }
+        scanner.close();
+        System.out.println("Number of words: " + numWords);
+        System.out.println("Number of characters: " + numChars);
+        System.out.println("Number of lines: " + numLines);
+    }
+}
