@@ -1,0 +1,37 @@
+class Customer {
+    private int AccountNo;
+    private String AccName;
+    private double Balance;
+
+    public Customer(int AccountNo, String AccName, double Balance) {
+        this.AccountNo = AccountNo;
+        this.AccName = AccName;
+        this.Balance = Balance;
+    }
+
+    public synchronized void deposit(double amount) {
+        Balance += amount;
+        System.out.println("Deposit of " + amount + " completed. New balance is " + Balance);
+        notify();
+    }
+
+    public synchronized void withdraw(double amount) throws InterruptedException {
+        if (amount > Balance) {
+            System.out.println("Requested amount " + amount + " is not available in balance " + Balance + ". Waiting for deposit.");
+            wait();
+        }
+        Balance -= amount;
+        System.out.println("Withdrawal of " + amount + " completed. New balance is " + Balance);
+    }
+
+    public static void main(String[] args) {
+        Customer c = new Customer(123, "John", 1000);
+        double withdrawAmount = 1500;
+        try {
+            c.withdraw(withdrawAmount);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        c.deposit(2000);
+    }
+}
